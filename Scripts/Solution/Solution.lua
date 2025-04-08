@@ -1,5 +1,4 @@
 Root = os.realpath(os.getcwd() .. "/../../"):gsub("\\", "/")
-NexusFramework = os.getenv('NexusFramework') .. "/"
 NexusEngine = os.getenv('NexusEngine') .. "/"
 
 Name = "%{prj.name}"
@@ -92,7 +91,6 @@ project (Sandbox .. "-App")
     includedirs
     {
         Sources,
-		NexusFramework .. "Sources/",
 		NexusEngine .. "Sources/"
     }
 
@@ -139,7 +137,6 @@ project (Sandbox .. "-Editor")
     includedirs
     {
         Sources,
-		NexusFramework .. "Sources/",
 		NexusEngine .. "Sources/"
     }
 
