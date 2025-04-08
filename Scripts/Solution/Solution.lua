@@ -1,8 +1,10 @@
 Root = os.realpath(os.getcwd() .. "/../../"):gsub("\\", "/")
+NexusFramework = os.getenv('NexusFramework') .. "/"
 NexusEngine = os.getenv('NexusEngine') .. "/"
 
 Name = "%{prj.name}"
 Output = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
+Link = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
 
 Framework = "NexusFramework"
 Engine = "NexusEngine"
@@ -100,12 +102,15 @@ project (Sandbox .. "-App")
     includedirs
     {
         Sources,
+		NexusFramework .. "Sources/",
 		NexusEngine .. "Sources/"
     }
 
 	libdirs
 	{
-		NexusEngine,
+		NexusFramework .. "Builds/NexusFramework" .. Link,
+		NexusEngine .. "Builds/NexusEngine" .. Link,
+		NexusEngine .. "Builds/NexusApp" .. Link,
 	}
 
 	links
@@ -146,12 +151,16 @@ project (Sandbox .. "-Editor")
     includedirs
     {
         Sources,
+		NexusFramework .. "Sources/",
 		NexusEngine .. "Sources/"
     }
 
 	libdirs
 	{
-		NexusEngine
+		NexusFramework .. "Builds/NexusFramework" .. Link,
+		NexusEngine .. "Builds/NexusEngine" .. Link,
+		NexusEngine .. "Builds/NexusApp" .. Link,
+		NexusEngine .. "Builds/NexusEditor" .. Link,
 	}
 
 	links
