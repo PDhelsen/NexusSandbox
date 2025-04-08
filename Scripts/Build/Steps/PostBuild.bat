@@ -16,6 +16,4 @@ set Artifacts=%Root%builds\artifacts\
 set Binaries=%Root%builds\binaries\%Project%_%Platform%_%Configuration%\
 robocopy %Binaries% %Artifacts% *.lib *.dll *.exe /it /is /e /v
 
-robocopy %NexusEngine% %Artifacts% *.lib *.dll *.exe
-
 if errorlevel 1 (pause) else (exit /b 0)

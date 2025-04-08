@@ -36,8 +36,13 @@ workspace (Sandbox)
     configurations { "Debug", "Release", "Distrib" }
 
 	startproject (Sandbox .. "-App")
-	debugcommand (Artifacts .. "NexusEditor.exe")
+	debugcommand (NexusEngine .. "NexusEditor.exe")
 	debugdir (Root)
+    filter "platforms:Win64"
+        debugargs { "Target=App" }
+    filter "platforms:Win64-Editor"
+        debugargs { "Target=Editor" }
+    filter {}
 
 	characterset "Unicode"
     flags { "MultiProcessorCompile" }
@@ -70,6 +75,10 @@ workspace (Sandbox)
         defines { "NEXUS_DISTRIB" }
         symbols "Off"
         optimize "On"
+
+group "Misc"
+	project (Utility)
+group ""
 
 project (Sandbox .. "-App")
     location (Code)
@@ -162,4 +171,19 @@ project (Sandbox .. "-Editor")
     postbuildcommands
     {
         PostBuild
+    }
+
+-- ----------------------------------------------------------------------------------
+project (Utility)
+    location (Code)
+
+    kind "Utility"
+
+    targetdir (Target)
+	objdir (Object)
+
+    files
+    {
+        Code .. "**.natvis",
+		NexusEngine .. "Sources/" .. "**.natvis",
     }

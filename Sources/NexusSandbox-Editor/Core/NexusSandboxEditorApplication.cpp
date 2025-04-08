@@ -18,6 +18,6 @@ namespace NxSE
 	{
 		NexusEditorApplication::OnExecute(Ticks, Systems);
 
-		Ticks.AppendTickCallback([]() {NEXUS_LOG(Info, Default, "Tick from Sandbox - Editor 5"); });
+		Ticks.AppendTickCallback([]() {NEXUS_LOG(Info, Default, "Tick from Sandbox - Editor"); });
 	}
 }
