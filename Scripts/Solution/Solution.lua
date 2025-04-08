@@ -194,5 +194,6 @@ project (Utility)
     files
     {
         Code .. "**.natvis",
+		NexusFramework .. "Sources/" .. "**.natvis",
 		NexusEngine .. "Sources/" .. "**.natvis",
     }
