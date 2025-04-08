@@ -4,7 +4,6 @@ NexusEngine = os.getenv('NexusEngine') .. "/"
 
 Name = "%{prj.name}"
 Output = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
-Link = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
 
 Framework = "NexusFramework"
 Engine = "NexusEngine"
@@ -14,8 +13,6 @@ Starter = "NexusStarter"
 Utility = "NexusUtility"
 Project = "NexusProject"
 Sandbox = "NexusSandbox"
-SandboxApp = "NexusSandbox-App"
-SandboxEditor = "NexusSandbox-Editor"
 
 Builds = Root .. "builds/"
 Configs = Root .. "Configs/"
@@ -39,12 +36,9 @@ workspace (Sandbox)
     platforms { "Win64", "Win64-Editor" }
     configurations { "Debug", "Release", "Distrib" }
 
-	startproject (SandboxApp)
+	startproject (Sandbox .. "-App")
+	debugcommand (Artifacts .. "NexusEditor.exe")
 	debugdir (Root)
-	debugcommand (Artifacts .. App .. "/" .. App .. ".exe")
-	filter "platforms:*-Editor"
-		debugcommand (Artifacts .. Editor .. "/" .. Editor .. ".exe")
-	filter {}
 
 	characterset "Unicode"
     flags { "MultiProcessorCompile" }
@@ -78,7 +72,7 @@ workspace (Sandbox)
         symbols "Off"
         optimize "On"
 
-project (SandboxApp)
+project (Sandbox .. "-App")
     location (Code)
 
     kind "SharedLib"
@@ -104,9 +98,7 @@ project (SandboxApp)
 
 	libdirs
 	{
-		NexusFramework .. "Builds/NexusFramework" .. Link,
-		NexusEngine .. "Builds/NexusEngine" .. Link,
-		NexusEngine .. "Builds/NexusApp" .. Link
+		NexusEngine,
 	}
 
 	links
@@ -127,7 +119,7 @@ project (SandboxApp)
     }
 
 
-project (SandboxEditor)
+project (Sandbox .. "-Editor")
     location (Code)
 
     kind "SharedLib"
@@ -153,10 +145,7 @@ project (SandboxEditor)
 
 	libdirs
 	{
-		NexusFramework .. "Builds/NexusFramework" .. Link,
-		NexusEngine .. "Builds/NexusEngine" .. Link,
-		NexusEngine .. "Builds/NexusApp" .. Link,
-		NexusEngine .. "Builds/NexusEditor" .. Link
+		NexusEngine
 	}
 
 	links
