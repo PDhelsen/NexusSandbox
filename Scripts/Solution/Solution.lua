@@ -3,7 +3,8 @@ NexusFramework = os.getenv('NexusFramework') .. "/"
 NexusEngine = os.getenv('NexusEngine') .. "/"
 
 Name = "%{prj.name}"
-Output = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
+OutputDirectory = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
+OutputName = "%{cfg.buildtarget.basename}%{cfg.buildtarget.extension}"
 Link = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
 
 Framework = "NexusFramework"
@@ -26,10 +27,10 @@ Binaries = Builds .. "binaries/"
 Intermediates = Builds .. "intermediates/"
 Code = Sources .. Name .. "/"
 External = Libraries .. Name .. "/"
-Target = Binaries .. Output .. "/"
-Object = Intermediates .. Output .. "/"
+Target = Binaries .. OutputDirectory .. "/"
+Object = Intermediates .. OutputDirectory .. "/"
 
-PostBuild = Scripts .. "Build/Steps/PostBuild.bat " .. Output
+PostBuild = Scripts .. "Build/Steps/PostBuild.bat " .. OutputDirectory .. " " .. OutputName
 
 workspace (Sandbox)
     location (Root)
@@ -103,6 +104,7 @@ project (Sandbox .. "-App")
     {
         Sources,
 		NexusFramework .. "Sources/",
+		NexusFramework .. "Libraries/",
 		NexusEngine .. "Sources/"
     }
 
@@ -152,6 +154,7 @@ project (Sandbox .. "-Editor")
     {
         Sources,
 		NexusFramework .. "Sources/",
+		NexusFramework .. "Libraries/",
 		NexusEngine .. "Sources/"
     }
 
