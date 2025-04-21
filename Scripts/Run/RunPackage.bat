@@ -4,6 +4,6 @@ set Root=%~dp0..\..\
 
 pushd %Root%builds\package\
 call NexusSandbox.exe DebugFolder=debugpackage
-popd %Current%
+popd
 
 if errorlevel 1 (pause) else (exit /b 0)
