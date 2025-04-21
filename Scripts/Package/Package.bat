@@ -1,6 +1,6 @@
 @echo off
 
-set Root=%~dp0..\
+set Root=%~dp0..\..\
 
 set Configuration=%1
 if [%Configuration%] == [] (set /p Configuration=Enter configuration:)
