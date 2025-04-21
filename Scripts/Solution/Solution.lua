@@ -5,7 +5,8 @@ NexusEngine = os.getenv('NexusEngine') .. "/"
 Name = "%{prj.name}"
 OutputDirectory = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
 OutputName = "%{cfg.buildtarget.basename}%{cfg.buildtarget.extension}"
-Link = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
+LinkFramework = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
+LinkEngine = "_%{cfg.platform}_%{cfg.buildcfg}"
 
 Framework = "NexusFramework"
 Engine = "NexusEngine"
@@ -110,9 +111,9 @@ project (Sandbox .. "-App")
 
 	libdirs
 	{
-		NexusFramework .. "Builds/NexusFramework" .. Link,
-		NexusEngine .. "Builds/NexusEngine" .. Link,
-		NexusEngine .. "Builds/NexusApp" .. Link,
+		NexusFramework .. "Builds/NexusFramework" .. LinkFramework,
+		NexusEngine .. "Builds/NexusEngine" .. LinkEngine,
+		NexusEngine .. "Builds/NexusApp" .. LinkEngine,
 	}
 
 	links
@@ -160,10 +161,10 @@ project (Sandbox .. "-Editor")
 
 	libdirs
 	{
-		NexusFramework .. "Builds/NexusFramework" .. Link,
-		NexusEngine .. "Builds/NexusEngine" .. Link,
-		NexusEngine .. "Builds/NexusApp" .. Link,
-		NexusEngine .. "Builds/NexusEditor" .. Link,
+		NexusFramework .. "Builds/NexusFramework" .. LinkFramework,
+		NexusEngine .. "Builds/NexusEngine" .. LinkEngine,
+		NexusEngine .. "Builds/NexusApp" .. LinkEngine,
+		NexusEngine .. "Builds/NexusEditor" .. LinkEngine,
 	}
 
 	links
