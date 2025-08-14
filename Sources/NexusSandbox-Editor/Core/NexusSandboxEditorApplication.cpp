@@ -9,20 +9,18 @@ namespace NxSE
 	{
 	}
 
-	void NexusSandboxEditorApplication::OnInitialize(NxEn::Bootstrapper& Bootstrap, NxEn::SystemManager& Systems)
+	void NexusSandboxEditorApplication::OnInitialize()
 	{
-		NexusEditorApplication::OnInitialize(Bootstrap, Systems);
+		NexusEditorApplication::OnInitialize();
 	}
 
-	void NexusSandboxEditorApplication::OnShutdown(NxEn::Bootstrapper& Unbootstrap, NxEn::SystemManager& Systems)
+	void NexusSandboxEditorApplication::OnShutdown()
 	{
-		NexusEditorApplication::OnShutdown(Unbootstrap, Systems);
+		NexusEditorApplication::OnShutdown();
 	}
 
-	void NexusSandboxEditorApplication::OnExecute(NxEn::Ticker& Ticks, NxEn::SystemManager& Systems)
+	void NexusSandboxEditorApplication::OnExecute()
 	{
-		NexusEditorApplication::OnExecute(Ticks, Systems);
-
-		Ticks.AppendTickCallback([]() {NEXUS_LOG(Info, Default, "Tick from Sandbox - Editor"); });
+		NexusEditorApplication::OnExecute();
 	}
 }

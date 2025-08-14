@@ -106,7 +106,8 @@ project (Sandbox .. "-App")
         Sources,
 		NexusFramework .. "Sources/",
 		NexusFramework .. "Libraries/",
-		NexusEngine .. "Sources/"
+		NexusEngine .. "Sources/",
+		NexusEngine .. "Libraries/"
     }
 
 	libdirs
@@ -114,13 +115,15 @@ project (Sandbox .. "-App")
 		NexusFramework .. "Builds/NexusFramework" .. LinkFramework,
 		NexusEngine .. "Builds/NexusEngine" .. LinkEngine,
 		NexusEngine .. "Builds/NexusApp" .. LinkEngine,
+		NexusEngine .. "Builds/ImGui" .. LinkEngine,
 	}
 
 	links
 	{
 		Framework,
 		Engine,
-		App
+		App,
+		ImGui
 	}
 
 	defines
@@ -156,7 +159,8 @@ project (Sandbox .. "-Editor")
         Sources,
 		NexusFramework .. "Sources/",
 		NexusFramework .. "Libraries/",
-		NexusEngine .. "Sources/"
+		NexusEngine .. "Sources/",
+		NexusEngine .. "Libraries/"
     }
 
 	libdirs
@@ -165,6 +169,7 @@ project (Sandbox .. "-Editor")
 		NexusEngine .. "Builds/NexusEngine" .. LinkEngine,
 		NexusEngine .. "Builds/NexusApp" .. LinkEngine,
 		NexusEngine .. "Builds/NexusEditor" .. LinkEngine,
+		NexusEngine .. "Builds/ImGui" .. LinkEngine,
 	}
 
 	links
@@ -173,7 +178,8 @@ project (Sandbox .. "-Editor")
 		Engine,
 		App,
 		Editor,
-		SandboxApp
+		SandboxApp,
+		ImGui
 	}
 
 	defines

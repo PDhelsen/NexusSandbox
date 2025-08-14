@@ -19,6 +19,8 @@ robocopy %NexusFramework%\Builds\NexusFramework_%Platform%_%Configuration%\ %Pac
 robocopy %NexusEngine%\Builds\NexusEngine_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
 robocopy %NexusEngine%\Builds\NexusApp_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
 robocopy %NexusEngine%\Builds\NexusStarter_%Platform%_%Configuration%\ %Package% *.exe /it /is /e /v
+robocopy %NexusEngine%\Builds\Glfw_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
+robocopy %NexusEngine%\Builds\ImGui_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
 
 robocopy %Binaries%NexusSandbox-App_%Platform%_%Configuration% %Package% *.dll /it /is /e /v
 rename %Package%NexusStarter.exe NexusSandbox.exe
