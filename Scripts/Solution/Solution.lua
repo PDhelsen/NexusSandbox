@@ -43,9 +43,9 @@ workspace (Sandbox)
 	debugcommand (NexusEngine .. "NexusEditor.exe")
 	debugdir (Root)
     filter "platforms:Win64"
-        debugargs { "Target=App" }
+        debugargs { "-Mode=App" }
     filter "platforms:Win64-Editor"
-        debugargs { "Target=Editor" }
+        debugargs { "-Mode=Editor" }
     filter {}
 
 	characterset "Unicode"
