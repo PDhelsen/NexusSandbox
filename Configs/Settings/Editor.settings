@@ -1,0 +1,14 @@
+Scene - Load scene in single mode: false
+Shortcuts:
+  Edit.Copy: Ctrl+C
+  Edit.Create: Ctrl+N
+  Edit.Cut: Ctrl+X
+  Edit.Delete: Delete
+  Edit.Duplicate: Ctrl+D
+  Edit.Invert: Ctrl+I
+  Edit.Move: Ctrl+M
+  Edit.Paste: Ctrl+V
+  Edit.Rename: F2
+  Edit.SelectAll: Ctrl+A
+  Edit.UnselectAll: Ctrl+Shift+A
+  Editor.Save: Ctrl+S

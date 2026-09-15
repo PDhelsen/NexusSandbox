@@ -2,10 +2,14 @@
 
 namespace NxSA
 {
-	NEXUS_APPLICATION_IMPLEMENTATION(::NxSA::NexusSandboxAppApplication)
+	NX_APPLICATION_IMPLEMENTATION(::NxSA::NexusSandboxAppApplication)
 
 	NexusSandboxAppApplication::NexusSandboxAppApplication(const NxEn::Project& ProjectInfo)
 		: NexusAppApplication(ProjectInfo)
+	{
+	}
+
+	NexusSandboxAppApplication::~NexusSandboxAppApplication()
 	{
 	}
 
@@ -19,8 +23,8 @@ namespace NxSA
 		NexusAppApplication::OnShutdown();
 	}
 
-	void NexusSandboxAppApplication::OnExecute()
+	void NexusSandboxAppApplication::OnRun()
 	{
-		NexusAppApplication::OnExecute();
+		NexusAppApplication::OnRun();
 	}
 }

@@ -2,10 +2,14 @@
 
 namespace NxSE
 {
-	NEXUS_APPLICATION_IMPLEMENTATION(::NxSE::NexusSandboxEditorApplication)
+	NX_APPLICATION_IMPLEMENTATION(::NxSE::NexusSandboxEditorApplication)
 
 	NexusSandboxEditorApplication::NexusSandboxEditorApplication(const NxEn::Project& ProjectInfo)
 		: NexusEditorApplication(ProjectInfo)
+	{
+	}
+
+	NexusSandboxEditorApplication::~NexusSandboxEditorApplication()
 	{
 	}
 
@@ -19,8 +23,8 @@ namespace NxSE
 		NexusEditorApplication::OnShutdown();
 	}
 
-	void NexusSandboxEditorApplication::OnExecute()
+	void NexusSandboxEditorApplication::OnRun()
 	{
-		NexusEditorApplication::OnExecute();
+		NexusEditorApplication::OnRun();
 	}
 }

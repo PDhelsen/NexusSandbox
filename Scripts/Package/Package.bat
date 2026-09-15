@@ -25,4 +25,12 @@ robocopy %NexusEngine%\Builds\ImGui_%Platform%_%Configuration%\ %Package% *.dll 
 robocopy %Binaries%NexusSandbox-App_%Platform%_%Configuration% %Package% *.dll /it /is /e /v
 rename %Package%NexusStarter.exe NexusSandbox.exe
 
+robocopy %Root%Assets %Package%Assets /e
+robocopy %Root%Configs %Package%Configs /e
+robocopy %Root%Resources %Package%Resources /e
+
+robocopy %Root% %Package% "NexusSandbox.nexus"
+set PROJECT_FILE=%Package%NexusSandbox.nexus
+powershell -NoProfile -Command "(Get-Content '%PROJECT_FILE%') -replace '^Mode:.*$', 'Mode: App' -replace '^Dll:.*$', ('Dll: ' + [char]34 + [char]34) | Set-Content '%PROJECT_FILE%'"
+
 if errorlevel 1 (pause) else (exit /b 0)
