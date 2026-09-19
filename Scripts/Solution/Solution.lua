@@ -1,13 +1,3 @@
-Root = os.realpath(os.getcwd() .. "/../../"):gsub("\\", "/")
-NexusFramework = os.getenv('NexusFramework') .. "/"
-NexusEngine = os.getenv('NexusEngine') .. "/"
-
-Name = "%{prj.name}"
-OutputDirectory = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
-OutputName = "%{cfg.buildtarget.basename}%{cfg.buildtarget.extension}"
-LinkFramework = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
-LinkEngine = "_%{cfg.platform}_%{cfg.buildcfg}"
-
 Framework = "NexusFramework"
 Engine = "NexusEngine"
 App = "NexusApp"
@@ -16,6 +6,50 @@ Starter = "NexusStarter"
 Utility = "NexusUtility"
 Project = "NexusProject"
 Sandbox = "NexusSandbox"
+GTest = "GTest"
+YamlCpp = "yaml-cpp"
+ImGui = "ImGui"
+ModeApp = "-App"
+ModeEditor = "-Editor"
+
+ProjectName = "%{prj.name}"
+OutputDirectory = "%{prj.name}_%{cfg.platform}_%{cfg.buildcfg}"
+OutputName = "%{cfg.buildtarget.basename}%{cfg.buildtarget.extension}"
+LinkConfigFramework = "_%{cfg.platform:gsub('-Editor', '')}_%{cfg.buildcfg}"
+LinkConfigEngine = "_%{cfg.platform}_%{cfg.buildcfg}"
+Language = "C++"
+LanguageVersion = "C++20"
+Systems = 
+{
+    Windows = "windows"
+}
+Platforms = 
+{
+    Win64 = "Win64",
+	Win64Editor = "Win64-Editor"
+}
+Configurations = 
+{
+    Debug  = "Debug",
+    Release = "Release",
+    Distrib = "Distrib"
+}
+Compilers = 
+{
+    Msvc = "msc"
+}
+Tools = 
+{
+    VisualStudio = "vs*"
+}
+Warnings = 
+{
+    "4244", "4251", "4267", "4275"
+}
+
+Root = os.realpath(os.getcwd() .. "/../../"):gsub("\\", "/")
+InstallFramework = os.getenv(Framework) .. "/"
+InstallEngine = os.getenv(Engine) .. "/"
 
 Builds = Root .. "builds/"
 Configs = Root .. "Configs/"
@@ -26,110 +60,141 @@ Sources = Root .. "Sources/"
 Artifacts = Builds .. "artifacts/"
 Binaries = Builds .. "binaries/"
 Intermediates = Builds .. "intermediates/"
-Code = Sources .. Name .. "/"
-External = Libraries .. Name .. "/"
+FirstParty = Sources .. ProjectName .. "/"
+ThirdParty = Libraries .. ProjectName .. "/"
 Target = Binaries .. OutputDirectory .. "/"
 Object = Intermediates .. OutputDirectory .. "/"
+
+Includes = 
+{
+    Sources,
+    Libraries,
+    InstallFramework .. "Sources/",
+    InstallFramework .. "Libraries/",
+    InstallEngine .. "Sources/",
+    InstallEngine .. "Libraries/"
+}
+
+LibrariesIncludes = 
+{
+	InstallFramework .. "Builds/" .. Framework .. LinkConfigFramework,
+	InstallFramework .. "Builds/" .. GTest .. LinkConfigFramework,
+	InstallFramework .. "Builds/" .. YamlCpp .. LinkConfigFramework,
+    InstallEngine .. "Builds/" .. Engine .. LinkConfigEngine,
+    InstallEngine .. "Builds/" .. App .. LinkConfigEngine,
+    InstallEngine .. "Builds/" .. ImGui .. LinkConfigEngine,
+}
+
+Links = 
+{
+    Framework,
+    GTest,
+    YamlCpp,
+    Engine,
+    App,
+    ImGui
+}
+
+Defines = 
+{
+	"GTEST_LINKED_AS_SHARED_LIBRARY",
+	'IMGUI_USER_CONFIG="NexusEngine/External/ImGui/Config.h"'
+}
 
 PostBuild = Scripts .. "Build/Steps/PostBuild.bat " .. OutputDirectory .. " " .. OutputName
 
 workspace (Sandbox)
     location (Root)
 
-    platforms { "Win64", "Win64-Editor" }
-    configurations { "Debug", "Release", "Distrib" }
+    platforms { Platforms.Win64, Platforms.Win64Editor }
+    configurations { Configurations.Debug, Configurations.Release, Configurations.Distrib }
 
-	startproject (Sandbox .. "-App")
-	debugcommand (NexusEngine .. "NexusEditor.exe")
+	startproject (Sandbox .. ModeApp)
+	debugcommand (InstallEngine .. Editor .. ".exe")
 	debugdir (Root)
-    filter "platforms:Win64"
-        debugargs { "-Mode=App" }
-    filter "platforms:Win64-Editor"
-        debugargs { "-Mode=Editor" }
-    filter {}
+	filter ("platforms:" .. Platforms.Win64)
+		debugargs { "-Mode=App" }
+	filter ("platforms:" .. Platforms.Win64Editor)
+		debugargs { "-Mode=Editor" }
+	filter ""
 
 	characterset "Unicode"
     flags { "MultiProcessorCompile" }
+    staticruntime "off"
 
-	filter "action:vs*"
-        toolset "msc"
+	filter ("action:" .. Tools.VisualStudio)
+        toolset (Compilers.Msvc)
 
-    filter "toolset:msc"
-        defines { "NX_MSVC" }
-    	disablewarnings { "4244", "4267", "4251" }
+    filter ("toolset:" .. Compilers.Msvc)
+        defines { "NX_MSVC", "_CRT_SECURE_NO_WARNINGS" }
+    	disablewarnings (Warnings)
 
-    filter "platforms:Win64*"
+    filter ("platforms:" .. Platforms.Win64 .. "*")
         defines { "NX_WINDOWS" }
+		system (Systems.Windows)
         architecture "x64"
-		system "windows"
 
-    filter "platforms:*-Editor"
+	filter ("platforms:*" .. ModeEditor)
         defines { "NX_EDITOR" }
 
-    filter "configurations:Debug"
+    filter ("configurations:" .. Configurations.Debug)
         defines { "NX_DEBUG" }
         symbols "On"
         optimize "Off"
 
-    filter "configurations:Release"
+    filter ("configurations:" .. Configurations.Release)
         defines { "NX_RELEASE" }
         symbols "On"
         optimize "On"
 
-    filter "configurations:Distrib"
+    filter ("configurations:" .. Configurations.Distrib)
         defines { "NX_DISTRIB" }
         symbols "Off"
         optimize "On"
+
+    filter ""
 
 group "Misc"
 	project (Utility)
 group ""
 
-project (Sandbox .. "-App")
-    location (Code)
+-- ----------------------------------------------------------------------------------
+project (Sandbox .. ModeApp)
+    location (FirstParty)
 
     kind "SharedLib"
-    language "C++"
-	cppdialect "C++20"
+    language (Language)
+	cppdialect (LanguageVersion)
 
-	targetname (Project .. "-App")
+	targetname (Project .. ModeApp)
 	targetdir (Target)
 	objdir (Object)
 
     files
     {
-        Code .. "**.h",
-        Code .. "**.cpp",
+        FirstParty .. "**.h",
+        FirstParty .. "**.cpp",
     }
 
     includedirs
     {
-        Sources,
-		NexusFramework .. "Sources/",
-		NexusFramework .. "Libraries/",
-		NexusEngine .. "Sources/",
-		NexusEngine .. "Libraries/"
+        Includes
     }
 
 	libdirs
 	{
-		NexusFramework .. "Builds/NexusFramework" .. LinkFramework,
-		NexusEngine .. "Builds/NexusEngine" .. LinkEngine,
-		NexusEngine .. "Builds/NexusApp" .. LinkEngine,
-		NexusEngine .. "Builds/ImGui" .. LinkEngine,
+		LibrariesIncludes
 	}
 
 	links
 	{
-		Framework,
-		Engine,
-		App,
-		ImGui
+		Links
 	}
 
 	defines
 	{
-		"NX_SANDBOX_APP_DLL"
+		Defines,
+        "NX_SANDBOX_APP_DLL"
 	}
 
     postbuildcommands
@@ -138,53 +203,43 @@ project (Sandbox .. "-App")
     }
 
 
-project (Sandbox .. "-Editor")
-    location (Code)
+project (Sandbox .. ModeEditor)
+    location (FirstParty)
 
     kind "SharedLib"
-    language "C++"
-	cppdialect "C++20"
+    language (Language)
+	cppdialect (LanguageVersion)
 
-	targetname (Project .. "-Editor")
+	targetname (Project .. ModeEditor)
 	targetdir (Target)
 	objdir (Object)
 
     files
     {
-        Code .. "**.h",
-        Code .. "**.cpp",
+        FirstParty .. "**.h",
+        FirstParty .. "**.cpp",
     }
 
     includedirs
     {
-        Sources,
-		NexusFramework .. "Sources/",
-		NexusFramework .. "Libraries/",
-		NexusEngine .. "Sources/",
-		NexusEngine .. "Libraries/"
+        Includes
     }
 
 	libdirs
 	{
-		NexusFramework .. "Builds/NexusFramework" .. LinkFramework,
-		NexusEngine .. "Builds/NexusEngine" .. LinkEngine,
-		NexusEngine .. "Builds/NexusApp" .. LinkEngine,
-		NexusEngine .. "Builds/NexusEditor" .. LinkEngine,
-		NexusEngine .. "Builds/ImGui" .. LinkEngine,
+		LibrariesIncludes,
+        InstallEngine .. "Builds/" .. Editor .. LinkConfigEngine,
 	}
 
 	links
 	{
-		Framework,
-		Engine,
-		App,
-		Editor,
-		SandboxApp,
-		ImGui
+		Links,
+        Editor
 	}
 
 	defines
 	{
+		Defines,
 		"NX_SANDBOX_EDITOR_DLL"
 	}
 
@@ -195,7 +250,7 @@ project (Sandbox .. "-Editor")
 
 -- ----------------------------------------------------------------------------------
 project (Utility)
-    location (Code)
+    location (FirstParty)
 
     kind "Utility"
 
@@ -204,7 +259,7 @@ project (Utility)
 
     files
     {
-        Code .. "**.natvis",
-		NexusFramework .. "Sources/" .. "**.natvis",
-		NexusEngine .. "Sources/" .. "**.natvis",
+        FirstParty .. "**.natvis",
+		InstallFramework .. "Sources/" .. "**.natvis",
+		InstallEngine .. "Sources/" .. "**.natvis",
     }

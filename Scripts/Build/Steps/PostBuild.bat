@@ -14,6 +14,6 @@ for /F "tokens=1-3 delims=_" %%A in ("%1") do (
 
 set Artifacts=%Root%builds\artifacts\
 set Binaries=%Root%builds\binaries\%Project%_%Platform%_%Configuration%\
-robocopy %Binaries% %Artifacts% %2 /it /is /e /v
+robocopy %Binaries% %Artifacts% %2 "*.dll *.lib *.pdb" /it /is /v 
 
 if errorlevel 1 (pause) else (exit /b 0)
