@@ -13,7 +13,8 @@ set Binaries=%Root%builds\binaries\
 if exist %Package% rmdir /s /q %Package%
 mkdir %Package%
 
-robocopy %NexusFramework%\Builds\yaml-cpp_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
+robocopy %NexusFramework%\Builds\GTest_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
+robocopy %NexusFramework%\Builds\YamlCpp_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
 robocopy %NexusFramework%\Builds\NexusFramework_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v
 
 robocopy %NexusEngine%\Builds\NexusEngine_%Platform%_%Configuration%\ %Package% *.dll /it /is /e /v

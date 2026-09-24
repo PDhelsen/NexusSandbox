@@ -7,7 +7,7 @@ Utility = "NexusUtility"
 Project = "NexusProject"
 Sandbox = "NexusSandbox"
 GTest = "GTest"
-YamlCpp = "yaml-cpp"
+YamlCpp = "YamlCpp"
 ImGui = "ImGui"
 ModeApp = "-App"
 ModeEditor = "-Editor"
@@ -70,9 +70,10 @@ Includes =
     Sources,
     Libraries,
     InstallFramework .. "Sources/",
-    InstallFramework .. "Libraries/",
+	InstallFramework .. "Libraries/" .. GTest .. "/googletest/include/",
+    InstallFramework .. "Libraries/" .. YamlCpp .. "/include/",
     InstallEngine .. "Sources/",
-    InstallEngine .. "Libraries/"
+    InstallEngine .. "Libraries/" .. ImGui .. "/",
 }
 
 LibrariesIncludes = 
